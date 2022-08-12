@@ -16,7 +16,7 @@ In addition, this project will include:
 * a README
 
 ## Wireframes
-![wireframe](~/Pictures/be square wireframe.png)
+![wireframe](https://ibb.co/5WmjVK)
 * navlinks are links to the project's Github repo and my LinkedIn
 * controls will display instructions
 
