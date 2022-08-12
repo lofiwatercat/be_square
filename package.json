@@ -1,0 +1,38 @@
+{
+  "name": "be_square",
+  "version": "1.0.0",
+  "description": "--- ## Background You are a square. As a square, you must move through levels with various designs and puzzles. Throughout your journey, you will find several new abilities to help you to the end.",
+  "main": "index.js",
+  "scripts": {
+    "watch": "webpack --watch --mode=development",
+    "build": "webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loFiWaterCat/be_square.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/loFiWaterCat/be_square/issues"
+  },
+  "homepage": "https://github.com/loFiWaterCat/be_square#readme",
+  "dependencies": {
+    "@babel/core": "^7.18.10",
+    "@babel/preset-env": "^7.18.10",
+    "babel-loader": "^8.2.5",
+    "core-js": "^3.24.1",
+    "css-loader": "^6.7.1",
+    "mini-css-extract-plugin": "^2.6.1",
+    "regenerator-runtime": "^0.13.9",
+    "sass": "^1.54.4",
+    "sass-loader": "^13.0.2",
+    "three": "^0.143.0",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}
