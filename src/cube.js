@@ -15,11 +15,13 @@ document.addEventListener("keyup", (event) => {
   keys[event.key] = false;
 })
 
-  let xDiff = 0.25;
-  let velX = 0;
-  let yDiff = 0.25;
-  let velY = 0;
-  let friction = 0.93;
+// Cube movement
+let xDiff = 0.25;
+let velX = 0;
+let yDiff = 0.25;
+let velY = 0;
+let friction = 0.93;
+
 function moveCube(arr) {
   if (keys['d']) {
     // cube.position.x += xDiff;
@@ -51,16 +53,29 @@ function moveCube(arr) {
     velY = 0;
   }
 
+  // Collision detection
   const cubeWidth = cube.geometry.parameters['width'];
+  const dispMulti = 0.23;
   arr.forEach(el => {
+    // Collision on x axis
     if (cubeBBox.intersectsBox(el)) {
       if (velX > 0) {
-        cube.position.x -= 0.2 * cubeWidth;
+        cube.position.x -= dispMulti * cubeWidth;
       } else if (velX < 0) {
-        cube.position.x -=2 * velX;
+        cube.position.x += dispMulti * cubeWidth;
       }
       velX = 0;
     }
+    // Collision on y axis
+    if (cubeBBox.intersectsBox(el)) {
+      if (velY > 0) {
+        cube.position.y -= dispMulti * cubeWidth;
+      } else if (velY < 0) {
+        cube.position.y += dispMulti * cubeWidth;
+      }
+      velY = 0;
+    }
+
   })
 
   velX *= friction;

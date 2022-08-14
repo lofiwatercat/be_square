@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { Box3 } from 'three';
 
-const geometry = new THREE.BoxGeometry( 0.1, 5, 5);
+const geometry = new THREE.BoxBufferGeometry( 0.1, 5, 5);
 const material = new THREE.MeshBasicMaterial( {color: 0xe6923e})
 
 const wallRight = new THREE.Mesh(geometry, material);

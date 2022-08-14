@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { cube, moveCube, cubeBBox, updateCubeBBox } from './cube';
 import { wallRight, wallRBBox, updateWallRBBox } from './wallRight';
+import { floor, floorBBox, updateFloorBBox } from './floor'
 
 document.addEventListener("DOMContentLoaded", () => {
   const scene = new THREE.Scene();
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Objects
   scene.add(cube);
   scene.add(wallRight);
+  scene.add(floor);
   
   // Helpers;
   const gridHelper = new THREE.GridHelper( 200, 50);
@@ -42,17 +44,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const cubeBBoxHelper = new THREE.Box3Helper( cubeBBox, 0xffff00);
   scene.add(cubeBBoxHelper);
 
+  const floorBBoxHelper = new THREE.Box3Helper( floorBBox, 0xff000 );
+  scene.add(floorBBoxHelper);
+
   const wallRBBoxHelper = new THREE.Box3Helper( wallRBBox, 0xff0000);
   scene.add(wallRBBoxHelper);
-  console.log(wallRBBox);
 
-  let nonPlayer = [wallRBBox];
+
+  let nonPlayer = [wallRBBox, floorBBox];
   
   function animate() {
 		requestAnimationFrame( animate );
 
     updateCubeBBox();
     updateWallRBBox();
+    updateFloorBBox();
 
 
     moveCube(nonPlayer);
