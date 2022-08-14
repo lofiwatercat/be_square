@@ -1,5 +1,7 @@
 import * as THREE from 'three';
-const Cube = require('./cube');
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { cube, moveCube, cubeBBox, updateCubeBBox } from './cube';
+import { wallRight, wallRBBox, updateWallRBBox } from './wallRight';
 
 document.addEventListener("DOMContentLoaded", () => {
   const scene = new THREE.Scene();
@@ -11,21 +13,53 @@ document.addEventListener("DOMContentLoaded", () => {
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 500);
   // camera.position.set(0, 0, 100);
   // camera.lookAt(0, 0, 0);
-  camera.position.z = 5;
+  camera.position.z = 25;
+  
+  // Resizes the game display whenever the size of the window changes
+  window.addEventListener('resize', () => {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  })
 
-  let cube = Cube.cube;
+  // Objects
+  scene.add(cube);
+  scene.add(wallRight);
+  
+  // Helpers;
+  const gridHelper = new THREE.GridHelper( 200, 50);
+  scene.add(gridHelper);
+  
+  const controls = new OrbitControls(camera, renderer.domElement);
+  
+  const pointLight = new THREE.PointLight(0xffffff);
+  pointLight.position.set(5, 5, 5);
+  const lightHelper = new THREE.PointLightHelper(pointLight);
+  scene.add(pointLight);
+  scene.add(lightHelper);
+
+  // Bounding boxes;
+  const cubeBBoxHelper = new THREE.Box3Helper( cubeBBox, 0xffff00);
+  scene.add(cubeBBoxHelper);
+
+  const wallRBBoxHelper = new THREE.Box3Helper( wallRBBox, 0xff0000);
+  scene.add(wallRBBoxHelper);
+  console.log(wallRBBox);
+
+  let nonPlayer = [wallRBBox];
   
   function animate() {
-				requestAnimationFrame( animate );
+		requestAnimationFrame( animate );
 
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
+    updateCubeBBox();
+    updateWallRBBox();
 
-				renderer.render( scene, camera );
+
+    moveCube(nonPlayer);
+		renderer.render( scene, camera );
 			};
 
 	animate();
 	
-  scene.add(cube);
   renderer.render(scene, camera);
 })
