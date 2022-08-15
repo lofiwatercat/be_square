@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import { Box3 } from 'three';
 
 // Create the floor
-const geometry = new THREE.BoxBufferGeometry(10, 0.1, 10);
-const material = new THREE.MeshBasicMaterial();
+const geometry = new THREE.BoxBufferGeometry(10, 0.1, 3);
+const material = new THREE.MeshStandardMaterial( {color: 0x000000});
 
 const floor = new THREE.Mesh( geometry, material );
 floor.position.set(0, -5, 0);
@@ -14,7 +14,9 @@ const floorBBox = new Box3();
 
 // Update position of the bounding box to the floor's position
 function updateFloorBBox() {
-  floorBBox.copy( floor.geometry.boundingBox ).applyMatrix4( floor.matrixWorld );
+  floorBBox.setFromObject(floor);
 }
+
+updateFloorBBox();
 
 export { floor, floorBBox, updateFloorBBox };

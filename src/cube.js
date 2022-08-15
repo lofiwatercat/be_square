@@ -1,8 +1,8 @@
 import * as THREE from 'three';
 import { Box3 } from 'three';
 
-const geometry = new THREE.BoxBufferGeometry(1, 1, 1); 
-const material = new THREE.MeshNormalMaterial( {color: 0x5d7499} )
+const geometry = new THREE.BoxBufferGeometry(0.7, 0.7, 0.7); 
+const material = new THREE.MeshStandardMaterial( {color: 0xffffff} )
 const cube = new THREE.Mesh(geometry, material);
 
 const keys = [];
@@ -16,12 +16,13 @@ document.addEventListener("keyup", (event) => {
 })
 
 // Cube movement
-let xDiff = 0.15;
+let xDiff = 0.13;
 let velX = 0;
-let yDiff = 0.15;
+let yDiff = 0.13;
 let velY = 0;
 let grav = -0.03;
-let friction = 0.93;
+let jumpVel = 0.5;
+let friction = 0.9;
 
 function moveCube(arr) {
   velY += grav;
@@ -95,13 +96,21 @@ function moveCube(arr) {
       }
       if (cubeCenter.x < elCenter.x ) {
         if (velX > 0
-        && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint2))) {
+        && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint2))
+        && el.containsPoint(interPoint4)) {
           velX = 0;
         }      
-      } else if (cubeCenter.x > elCenter.x
-      && !(el.containsPoint(interPoint3) || el.containsPoint(interPoint4))) {
-        if (velX < 0) {
+        if (keys[' ']) {
+          velY = jumpVel;
+        }
+      } else if (cubeCenter.x > elCenter.x ) {
+      if (velX < 0
+        && !(el.containsPoint(interPoint3) || el.containsPoint(interPoint4))
+        && el.containsPoint(interPoint1)) {
           velX = 0;
+        }
+        if (keys[' ']) {
+          velY = jumpVel;
         }
       }
       if (cubeCenter.y > elCenter.y
@@ -116,8 +125,8 @@ function moveCube(arr) {
         }
       }
       // Jump if we are touching the ground
-      if (keys[' '] && (el.containsPoint(interPoint2) || el.containsPoint(interPoint3))) {
-        velY = 0.7;
+      if (keys[' '] && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
+        velY = 0.5;
       }
     }
 
