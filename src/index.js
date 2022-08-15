@@ -2,7 +2,9 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { cube, moveCube, cubeBBox, updateCubeBBox } from './cube';
 import { wallRight, wallRBBox, updateWallRBBox } from './wallRight';
+import { wallLeft, wallLBBox, updateWallLBBox } from './wallLeft';
 import { floor, floorBBox, updateFloorBBox } from './floor'
+import { ceiling, ceilingBBox, updateCeilingBBox } from './ceiling';
 
 document.addEventListener("DOMContentLoaded", () => {
   const scene = new THREE.Scene();
@@ -26,7 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Objects
   scene.add(cube);
   scene.add(wallRight);
+  scene.add(wallLeft);
   scene.add(floor);
+  scene.add(ceiling);
   
   // Helpers;
   const gridHelper = new THREE.GridHelper( 200, 50);
@@ -47,8 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const floorBBoxHelper = new THREE.Box3Helper( floorBBox, 0xff000 );
   scene.add(floorBBoxHelper);
 
+  const ceilingBBoxHelper = new THREE.Box3Helper( ceilingBBox, 0xfff00 );
+  scene.add(ceilingBBoxHelper);
+
   const wallRBBoxHelper = new THREE.Box3Helper( wallRBBox, 0xff0000);
   scene.add(wallRBBoxHelper);
+
+  const wallLBBoxHelper = new THREE.Box3Helper( wallLBBox, 0xff0000);
+  scene.add(wallLBBoxHelper);
 
   // Testing
   window.cube = cube;
@@ -59,14 +69,15 @@ document.addEventListener("DOMContentLoaded", () => {
   window.wallRBBox = wallRBBox;
 
 
-  let nonPlayer = [wallRBBox, floorBBox];
+  let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox];
   
   function animate() {
 		requestAnimationFrame( animate );
-
-    updateCubeBBox();
     updateWallRBBox();
+    updateWallLBBox();
     updateFloorBBox();
+    updateCeilingBBox();
+
 
 
     moveCube(nonPlayer);
