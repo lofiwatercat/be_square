@@ -58,8 +58,8 @@ function moveCube(arr) {
   }
 
   // Collision detection
-  // const cubeWidth = cube.geometry.parameters['width'];
-  // const cubeHeight = cube.geometry.parameters['height'];
+  const cubeWidth = cube.geometry.parameters['width'];
+  const cubeHeight = cube.geometry.parameters['height'];
   // const dispMulti = 0.23;
   arr.forEach(el => {
     // Collision on x axis
@@ -100,18 +100,18 @@ function moveCube(arr) {
         && el.containsPoint(interPoint4)) {
           velX = 0;
         }      
-        if (keys[' ']) {
-          velY = jumpVel;
-        }
+        // if (keys[' ']) {
+        //   velY = jumpVel;
+        // }
       } else if (cubeCenter.x > elCenter.x ) {
       if (velX < 0
         && !(el.containsPoint(interPoint3) || el.containsPoint(interPoint4))
         && el.containsPoint(interPoint1)) {
           velX = 0;
         }
-        if (keys[' ']) {
-          velY = jumpVel;
-        }
+        // if (keys[' ']) {
+        //   velY = jumpVel;
+        // }
       }
       if (cubeCenter.y > elCenter.y
       && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint4))) {
@@ -127,6 +127,19 @@ function moveCube(arr) {
       // Jump if we are touching the ground
       if (keys[' '] && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
         velY = 0.5;
+      }
+
+      if (el.containsPoint(interPoint1) && el.containsPoint(interPoint2)) {
+        cube.position.x += (cubeWidth / 2) - Math.abs(cubeCenter.x - el.max.x) - 0.01;
+      }
+      if (el.containsPoint(interPoint3) && el.containsPoint(interPoint4)) {
+        cube.position.x -= (cubeWidth / 2) - Math.abs(cubeCenter.x - el.min.x) - 0.01;
+      }
+      if (el.containsPoint(interPoint2) && el.containsPoint(interPoint3)) {
+        cube.position.y += (cubeHeight / 2) - (cubeCenter.y - el.max.y) - 0.01;
+      }
+      if (el.containsPoint(interPoint1) && el.containsPoint(interPoint4)) {
+        cube.position.y -= (cubeHeight / 2) - (cubeCenter.y - e.min.y) - 0.01;
       }
     }
 

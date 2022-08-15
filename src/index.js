@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   scene.add(towerBBoxHelper);
 
   // Testing
-  // window.cube = cube;
+  window.cube = cube;
   // window.wallRight = wallRight;
   // window.a = new THREE.Vector3();
   // window.cubeBBoxHelper = cubeBBoxHelper;

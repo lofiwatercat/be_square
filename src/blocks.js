@@ -5,7 +5,7 @@ import { Box3 } from 'three';
 const towerGeo = new THREE.BoxBufferGeometry(3, 4, 3);
 
 // Material for the blocks 
-const material = new THREE.MeshStandardMaterial(0xd3d8e3);
+const material = new THREE.MeshStandardMaterial( {color: 0xe3d4c8});
 const tower = new THREE.Mesh(towerGeo, material);
 
 tower.geometry.computeBoundingBox();
