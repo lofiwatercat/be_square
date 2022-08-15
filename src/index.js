@@ -50,6 +50,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const wallRBBoxHelper = new THREE.Box3Helper( wallRBBox, 0xff0000);
   scene.add(wallRBBoxHelper);
 
+  // Testing
+  window.cube = cube;
+  window.wallRight = wallRight;
+  window.a = new THREE.Vector3();
+  
+  window.cubeBBox = cubeBBox;
+  window.wallRBBox = wallRBBox;
+
 
   let nonPlayer = [wallRBBox, floorBBox];
   
