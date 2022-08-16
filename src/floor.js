@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Box3 } from 'three';
 
 // Create the floor
-const geometry = new THREE.BoxBufferGeometry(10, 0.1, 3);
+const geometry = new THREE.BoxBufferGeometry(25, 0.1, 3);
 const material = new THREE.MeshStandardMaterial( {color: 0x000000});
 
 const floor = new THREE.Mesh( geometry, material );

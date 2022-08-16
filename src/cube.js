@@ -1,9 +1,13 @@
 import * as THREE from 'three';
 import { Box3 } from 'three';
 
-const geometry = new THREE.BoxBufferGeometry(0.7, 0.7, 0.7); 
+const geometry = new THREE.BoxBufferGeometry(1, 1, 1); 
 const material = new THREE.MeshStandardMaterial( {color: 0xffffff} )
 const cube = new THREE.Mesh(geometry, material);
+
+const edges = new THREE.EdgesGeometry( geometry );
+const lineMaterial = new THREE.LineBasicMaterial( { color: 0x000000 } );
+const line = new THREE.LineSegments( edges, lineMaterial );
 
 const keys = [];
 
@@ -22,6 +26,8 @@ let yDiff = 0.13;
 let velY = 0;
 let grav = -0.03;
 let jumpVel = 0.5;
+let rClock = 0;
+let rCounterClock = 0;
 let friction = 0.9;
 
 function moveCube(arr) {
@@ -100,18 +106,12 @@ function moveCube(arr) {
         && el.containsPoint(interPoint4)) {
           velX = 0;
         }      
-        // if (keys[' ']) {
-        //   velY = jumpVel;
-        // }
       } else if (cubeCenter.x > elCenter.x ) {
       if (velX < 0
         && !(el.containsPoint(interPoint3) || el.containsPoint(interPoint4))
         && el.containsPoint(interPoint1)) {
           velX = 0;
         }
-        // if (keys[' ']) {
-        //   velY = jumpVel;
-        // }
       }
       if (cubeCenter.y > elCenter.y
       && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint4))) {
@@ -127,7 +127,14 @@ function moveCube(arr) {
       // Jump if we are touching the ground
       if (keys[' '] && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
         velY = 0.5;
+        if (velX > 0) {
+          rClock += 105;
+        }
+        if (velX < 0) {
+          rCounterClock += 105;
+        }
       }
+
 
       if (el.containsPoint(interPoint1) && el.containsPoint(interPoint2)) {
         cube.position.x += (cubeWidth / 2) - Math.abs(cubeCenter.x - el.max.x) - 0.01;
@@ -139,8 +146,25 @@ function moveCube(arr) {
         cube.position.y += (cubeHeight / 2) - (cubeCenter.y - el.max.y) - 0.01;
       }
       if (el.containsPoint(interPoint1) && el.containsPoint(interPoint4)) {
-        cube.position.y -= (cubeHeight / 2) - (cubeCenter.y - e.min.y) - 0.01;
+        cube.position.y -= (cubeHeight / 2) - (cubeCenter.y - el.min.y) - 0.01;
       }
+    }
+
+    if (rClock) {
+      cube.rotation.z -= 0.03;
+      line.rotation.z -= 0.03;
+      rClock--;
+    }
+    if (rCounterClock) {
+      cube.rotation.z += 0.03;
+      line.rotation.z += 0.03;
+      rCounterClock--;
+    }
+    if (!rClock && !rCounterClock) {
+      cube.rotation.z = 0;
+      line.rotation.z = 0;
+      rClock = 0;
+      rCounterClock = 0;
     }
 
   })
@@ -156,7 +180,29 @@ function moveCube(arr) {
   
   cube.position.x += velX;
   cube.position.y += velY;
+  line.position.x = cube.position.x;
+  line.position.y = cube.position.y;
   updateCubeBBox();
+}
+
+let velZ = 0;
+function moveCubeAlt() {
+  if (keys['w']) {
+    // cube.position.y += yDiff;
+    if (velY < yDiff) {
+      velZ += 0.03;
+    }
+  }
+  if (keys['s']) {
+    // cube.position.y -= yDiff;
+    if (velY > -yDiff) {
+      velZ -= 0.03;
+    }
+  }
+
+  velZ *= friction;
+  cube.position.z += velZ;
+
 }
 
 // Bounding box stuff
@@ -167,4 +213,4 @@ function updateCubeBBox() {
   cubeBBox.setFromObject(cube);
 }
 
-export { cube, keys, moveCube, cubeBBox, updateCubeBBox };
+export { cube, line, keys, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt };
