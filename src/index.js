@@ -12,6 +12,7 @@ import { wallLeft, wallLBBox } from './wallLeft';
 import { floor, floorBBox } from './floor'
 import { ceiling, ceilingBBox} from './ceiling';
 import { tower, towerBBox, updateTowerBBox } from './blocks';
+import { threeX3_1, threeX3_1BBox, updateThreeX3_1BBox } from './blocks';
 
 document.addEventListener("DOMContentLoaded", () => {
   const scene = new THREE.Scene();
@@ -33,13 +34,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Objects
   tower.position.set(0, -5, 0);
+  threeX3_1.position.set(10, -3.5, -1);
 
   scene.add(cube);
   scene.add(wallRight);
   scene.add(wallLeft);
   scene.add(floor);
   scene.add(ceiling);
+  
   scene.add(tower);
+  scene.add(threeX3_1);
   
   // Helpers;
   // const gridHelper = new THREE.GridHelper( 200, 50);
@@ -110,6 +114,10 @@ document.addEventListener("DOMContentLoaded", () => {
   updateTowerBBox();
   scene.add(towerBBoxHelper);
 
+  const threeX3_1BBoxHelper = new THREE.Box3Helper( threeX3_1BBox, 0x000000 );
+  updateThreeX3_1BBox();
+  scene.add(threeX3_1BBoxHelper);
+
   // Wireframe for cube
   scene.add( line );
   
@@ -121,11 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
   // window.a = new THREE.Vector3();
   // window.cubeBBoxHelper = cubeBBoxHelper;
   // 
-  // window.cubeBBox = cubeBBox;
+  window.cubeBBox = cubeBBox;
   // window.wallRBBox = wallRBBox;
+  
+  tower.position.set(0, -1, 0);
+  updateTowerBBox();
 
-
-  let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox, towerBBox];
+  let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox, towerBBox, threeX3_1BBox];
   let moveMode = true;
 
   document.addEventListener('keydown', (event) => {
@@ -136,7 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function animate() {
 		requestAnimationFrame( animate );
-
+		
     if (moveMode) {
       moveCube(nonPlayer);
     } else {
