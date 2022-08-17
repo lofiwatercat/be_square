@@ -13,8 +13,12 @@ import { wallRight, wallRBBox } from './wallRight';
 import { wallLeft, wallLBBox } from './wallLeft';
 import { floor, floorBBox } from './floor'
 import { ceiling, ceilingBBox} from './ceiling';
+import { finish, finishBBox, updateFinishBBox } from './blocks';
 import { tower, towerBBox, updateTowerBBox } from './blocks';
 import { threeX3_1, threeX3_1BBox, updateThreeX3_1BBox } from './blocks';
+import { threeX2_1, threeX2_1BBox, updateThreeX2_1BBox } from './blocks';
+import { twoX3_1, twoX3_1BBox, updateTwoX3_1BBox } from './blocks';
+import * as LEVELS from './levels';
 
 document.addEventListener("DOMContentLoaded", () => {
   const scene = new THREE.Scene();
@@ -44,8 +48,6 @@ document.addEventListener("DOMContentLoaded", () => {
   scene.add(floor);
   scene.add(ceiling);
   
-  scene.add(tower);
-  scene.add(threeX3_1);
   
   // Helpers;
   // const gridHelper = new THREE.GridHelper( 200, 50);
@@ -66,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     y: window.innerHeight
   };
 
-  const black = new THREE.Color( 0x000000 );
 
   window.resolution = resolution
   const composer = new EffectComposer( renderer );
@@ -97,13 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
   scene.add(wallLBBoxHelper);
 
   // Have to call update{Block} because we set the position in the index file
-  const towerBBoxHelper = new THREE.Box3Helper( towerBBox, 0x000000 )
-  updateTowerBBox();
-  scene.add(towerBBoxHelper);
+  LEVELS.level1(scene);
+  LEVELS.level2(scene);
 
-  const threeX3_1BBoxHelper = new THREE.Box3Helper( threeX3_1BBox, 0x000000 );
-  updateThreeX3_1BBox();
-  scene.add(threeX3_1BBoxHelper);
 
   // Wireframe for cube
   scene.add( line );
@@ -122,13 +119,23 @@ document.addEventListener("DOMContentLoaded", () => {
   // tower.position.set(0, -1, 0);
   // updateTowerBBox();
 
-  let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox, towerBBox, threeX3_1BBox];
+  let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox, 
+    towerBBox, threeX3_1BBox, threeX2_1BBox, twoX3_1BBox];
   let moveMode = true;
+
+  const white = new THREE.Color(0xffffff);
+  const black = new THREE.Color(0x000000);
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 't') {
       moveMode = !moveMode;
-      console.log(moveMode);
+    }
+    if (moveMode) {
+      cube.material.color = white;
+      line.material.color = black;
+    } else {
+      cube.material.color = black;
+      line.material.color = white;
     }
   });
   
@@ -140,6 +147,12 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       moveCubeAlt(nonPlayer);
     }
+
+    finish.rotation.x += 0.01;
+    finish.rotation.y += 0.01;
+    finish.rotation.z += 0.01;
+    updateFinishBBox();
+
 		// renderer.render( scene, camera );
 		composer.render();
 	};

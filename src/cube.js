@@ -4,7 +4,6 @@ import { Box3 } from 'three';
 const geometry = new THREE.BoxBufferGeometry(1, 1, 1); 
 const material = new THREE.MeshStandardMaterial( {color: 0xffffff} )
 const cube = new THREE.Mesh(geometry, material);
-cube.position.set(-3, 2, 0);
 
 const edges = new THREE.EdgesGeometry( geometry );
 const lineMaterial = new THREE.LineBasicMaterial( { color: 0x000000 } );
