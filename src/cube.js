@@ -20,6 +20,8 @@ document.addEventListener("keyup", (event) => {
   keys[event.key] = false;
 })
 
+let finished = false;
+
 // Cube movement
 let xDiff = 0.13;
 let velX = 0;
@@ -30,7 +32,14 @@ let rClock = 0;
 let rCounterClock = 0;
 let friction = 0.9;
 
+function stop() {
+  velX = 0;
+  velY = 0;
+  velZ = 0;
+}
+
 function moveCube(arr) {
+  finished = false;
   velY += grav;
   
   if (keys['d']) {
@@ -58,7 +67,8 @@ function moveCube(arr) {
     }
   }
   if (keys['r']) {
-    cube.position.set(0, 0, 0);
+    cube.position.set(-15, -3, 0);
+    line.position.set(-15, -3, 0);
     velX = 0;
     velY = 0;
   }
@@ -78,10 +88,14 @@ function moveCube(arr) {
     cubeCenter.z < el.min.z) {
       return;
     }
+
     
     // Still problem where half of the box can clip through edges, and
     // tunneling can also occur
     if (cubeBBox.intersectsBox(el)) {
+      if (el === finishBBox) {
+        finished = true;
+      }
       cube.rotation.z = 0;
       line.rotation.z = 0;
       rClock = 0;
@@ -200,6 +214,7 @@ function moveCube(arr) {
 let zDiff = 0.3;
 let velZ = 0;
 function moveCubeAlt(arr) {
+  finished = false;
   velY += grav;
   
   if (keys['s']) {
@@ -215,6 +230,7 @@ function moveCubeAlt(arr) {
     }
   }
   
+  // finished = false;
   // Collision detection
   const cubeWidth = cube.geometry.parameters['width'];
   const cubeHeight = cube.geometry.parameters['height'];
@@ -235,6 +251,9 @@ function moveCubeAlt(arr) {
     // Still problem where half of the box can clip through edges, and
     // tunneling can also occur
     if (cubeBBox.intersectsBox(el)) {
+      if (el === finishBBox) {
+        finished = true;
+      }
       let interPoint1 = cubeCenter.clone();
       let interPoint2 = cubeCenter.clone();
       let interPoint3 = cubeCenter.clone();
@@ -364,4 +383,4 @@ function updateCubeBBox() {
 }
 
 
-export { cube, line, keys, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt };
+export { cube, line, keys, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt, finished, stop };

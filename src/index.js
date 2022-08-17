@@ -8,7 +8,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 // import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass';
 import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
 import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass';
-import { cube, line, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt } from './cube';
+import { cube, line, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt, finished, stop } from './cube';
 import { wallRight, wallRBBox } from './wallRight';
 import { wallLeft, wallLBBox } from './wallLeft';
 import { floor, floorBBox } from './floor'
@@ -18,6 +18,8 @@ import { tower, towerBBox, updateTowerBBox } from './blocks';
 import { threeX3_1, threeX3_1BBox, updateThreeX3_1BBox } from './blocks';
 import { threeX2_1, threeX2_1BBox, updateThreeX2_1BBox } from './blocks';
 import { twoX3_1, twoX3_1BBox, updateTwoX3_1BBox } from './blocks';
+import { threeX5_1, threeX5_1BBox, updateThreeX5_1BBox } from './blocks';
+import { blk6, blk6BBox, updateBlk6BBox } from './blocks';
 import * as LEVELS from './levels';
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -98,8 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
   scene.add(wallLBBoxHelper);
 
   // Have to call update{Block} because we set the position in the index file
-  LEVELS.level1(scene);
-  LEVELS.level2(scene);
+  
+
 
 
   // Wireframe for cube
@@ -109,6 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Testing
   window.cube = cube;
   window.line = line;
+  window.finishBBox = finishBBox;
   // window.wallRight = wallRight;
   // window.a = new THREE.Vector3();
   // window.cubeBBoxHelper = cubeBBoxHelper;
@@ -120,7 +123,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // updateTowerBBox();
 
   let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox, 
-    towerBBox, threeX3_1BBox, threeX2_1BBox, twoX3_1BBox];
+    towerBBox, threeX3_1BBox, threeX2_1BBox, twoX3_1BBox, finishBBox,
+    threeX5_1BBox, blk6BBox];
   let moveMode = true;
 
   const white = new THREE.Color(0xffffff);
@@ -129,7 +133,12 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('keydown', (event) => {
     if (event.key === 't') {
       moveMode = !moveMode;
+      stop();
     }
+    swapColors();
+  });
+
+  function swapColors() {
     if (moveMode) {
       cube.material.color = white;
       line.material.color = black;
@@ -137,10 +146,32 @@ document.addEventListener("DOMContentLoaded", () => {
       cube.material.color = black;
       line.material.color = white;
     }
-  });
+  }
+  
+  const levels = [
+    LEVELS.level1,
+    LEVELS.level2,
+    LEVELS.level3,
+  ]
+
+
+  let i = 0;
+  levels[i](scene);
+  // Testing
+  // levels[1](scene);
+  // levels[2](scene);
   
   function animate() {
 		requestAnimationFrame( animate );
+
+		if (finished === true) {
+		  if (i + 1 < levels.length) {
+		    i++;
+		  }
+		  levels[i](scene);
+		  moveMode = true;
+		  swapColors();
+		}
 		
     if (moveMode) {
       moveCube(nonPlayer);
@@ -148,9 +179,9 @@ document.addEventListener("DOMContentLoaded", () => {
       moveCubeAlt(nonPlayer);
     }
 
-    finish.rotation.x += 0.01;
-    finish.rotation.y += 0.01;
-    finish.rotation.z += 0.01;
+    finish.rotation.x += 0.03;
+    finish.rotation.y += 0.03;
+    finish.rotation.z += 0.03;
     updateFinishBBox();
 
 		// renderer.render( scene, camera );
