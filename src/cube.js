@@ -4,10 +4,12 @@ import { Box3 } from 'three';
 const geometry = new THREE.BoxBufferGeometry(1, 1, 1); 
 const material = new THREE.MeshStandardMaterial( {color: 0xffffff} )
 const cube = new THREE.Mesh(geometry, material);
+cube.position.set(-3, 2, 0);
 
 const edges = new THREE.EdgesGeometry( geometry );
 const lineMaterial = new THREE.LineBasicMaterial( { color: 0x000000 } );
 const line = new THREE.LineSegments( edges, lineMaterial );
+
 
 const keys = [];
 
@@ -25,7 +27,6 @@ let velX = 0;
 let yDiff = 0.13;
 let velY = 0;
 let grav = -0.03;
-let jumpVel = 0.5;
 let rClock = 0;
 let rCounterClock = 0;
 let friction = 0.9;
@@ -74,9 +75,20 @@ function moveCube(arr) {
     let elCenter = new THREE.Vector3();
     el.getCenter(elCenter);
     
+    if (cubeCenter.z > el.max.z || 
+    cubeCenter.z < el.min.z) {
+      return;
+    }
+    
     // Still problem where half of the box can clip through edges, and
     // tunneling can also occur
     if (cubeBBox.intersectsBox(el)) {
+      cube.rotation.z = 0;
+      line.rotation.z = 0;
+      rClock = 0;
+      rCounterClock = 0;
+
+
       let interPoint1 = cubeCenter.clone();
       let interPoint2 = cubeCenter.clone();
       let interPoint3 = cubeCenter.clone();
@@ -103,18 +115,19 @@ function moveCube(arr) {
       if (cubeCenter.x < elCenter.x ) {
         if (velX > 0
         && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint2))
-        && el.containsPoint(interPoint4)) {
+        && (el.containsPoint(interPoint3) || el.containsPoint(interPoint4))) {
           velX = 0;
         }      
       } else if (cubeCenter.x > elCenter.x ) {
-      if (velX < 0
+        if (velX < 0
         && !(el.containsPoint(interPoint3) || el.containsPoint(interPoint4))
-        && el.containsPoint(interPoint1)) {
+        && (el.containsPoint(interPoint1) || el.containsPoint(interPoint2))) {
           velX = 0;
         }
       }
       if (cubeCenter.y > elCenter.y
-      && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint4))) {
+      && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint4))
+      && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
         if (velY < 0) {
           velY = 0;
         } 
@@ -126,7 +139,7 @@ function moveCube(arr) {
       }
       // Jump if we are touching the ground
       if (keys[' '] && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
-        velY = 0.5;
+        velY = 0.57;
         if (velX > 0) {
           rClock += 105;
         }
@@ -140,16 +153,12 @@ function moveCube(arr) {
         cube.position.x += (cubeWidth / 2) - Math.abs(cubeCenter.x - el.max.x) - 0.01;
       }
       if (el.containsPoint(interPoint3) && el.containsPoint(interPoint4)) {
-        // cube.position.x -= (cubeWidth / 2) - Math.abs(cubeCenter.x - el.min.x) - 0.01;
-        console.log(interPoint3);
-        console.log('cubeBBox.min.y ', cubeBBox.min.y);
-        velY = 0;
+        cube.position.x -= (cubeWidth / 2) - Math.abs(cubeCenter.x - el.min.x) - 0.01;
       }
       if (el.containsPoint(interPoint2) && el.containsPoint(interPoint3)) {
         cube.position.y += (cubeHeight / 2) - (cubeCenter.y - el.max.y) - 0.01;
       }
       if (el.containsPoint(interPoint1) && el.containsPoint(interPoint4)) {
-        console.log("hello");
         cube.position.y -= (cubeHeight / 2) - (cubeCenter.y - el.min.y) - 0.01;
       }
     }
@@ -212,6 +221,12 @@ function moveCubeAlt(arr) {
   const cubeHeight = cube.geometry.parameters['height'];
   // const dispMulti = 0.23;
   arr.forEach(el => {
+      cube.rotation.z = 0;
+      line.rotation.z = 0;
+      rClock = 0;
+      rCounterClock = 0;
+
+
     // Collision on x axis
     let cubeCenter = new THREE.Vector3();
     cubeBBox.getCenter(cubeCenter);
@@ -258,7 +273,8 @@ function moveCubeAlt(arr) {
         }
       }
       if (cubeCenter.y > elCenter.y
-      && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint4))) {
+      && !(el.containsPoint(interPoint1) || el.containsPoint(interPoint4))
+      && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
         if (velY < 0) {
           velY = 0;
         } 
@@ -270,7 +286,7 @@ function moveCubeAlt(arr) {
       }
       // Jump if we are touching the ground
       if (keys[' '] && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
-        velY = 0.5;
+        velY = 0.6;
         if (velZ > 0) {
           rCounterClock += 55;
         }
@@ -347,5 +363,6 @@ const cubeBBox = new Box3();
 function updateCubeBBox() {
   cubeBBox.setFromObject(cube);
 }
+
 
 export { cube, line, keys, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt };

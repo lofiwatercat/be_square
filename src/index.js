@@ -6,6 +6,8 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 // import { FilmPass} from 'three/examples/jsm/postprocessing/FilmPass';
 // import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 // import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass';
+import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
+import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass';
 import { cube, line, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt } from './cube';
 import { wallRight, wallRBBox } from './wallRight';
 import { wallLeft, wallLBBox } from './wallLeft';
@@ -34,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Objects
   tower.position.set(0, -5, 0);
-  threeX3_1.position.set(10, -3.5, -1);
+  threeX3_1.position.set(4, -3.5, -1);
 
   scene.add(cube);
   scene.add(wallRight);
@@ -52,46 +54,31 @@ document.addEventListener("DOMContentLoaded", () => {
   const controls = new OrbitControls(camera, renderer.domElement);
   
   const ambientLight = new THREE.AmbientLight(0xffffff);
-  const pointLight = new THREE.PointLight(0xffffff);
-  // pointLight.position.set(5, 3, 5);
-  // const lightHelper = new THREE.PointLightHelper(pointLight);
-  scene.add(ambientLight);
-  // scene.add(lightHelper);
+  const pointLight = new THREE.PointLight(0xffffff, 1, 100);
+  pointLight.position.set(5, 3, 5);
+  const lightHelper = new THREE.PointLightHelper(pointLight);
+  // scene.add(ambientLight);
+  scene.add(pointLight, lightHelper);
 
   // Postprocessing
+  let resolution = {
+    x: window.innerWidth,
+    y: window.innerHeight
+  };
+
+  const black = new THREE.Color( 0x000000 );
+
+  window.resolution = resolution
   const composer = new EffectComposer( renderer );
   const renderPass = new RenderPass( scene, camera );
+  // const taaPass = new TAARenderPass( scene, camera, black, 1)
+  // taaPass.sampleLevel = 1;
+  const pixelatedPass =  new RenderPixelatedPass(
+    resolution, 1, scene, camera
+  );
   composer.addPass( renderPass );
-
-  // const selectedObjects = [cube];
-  // const outlinePass = new OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight),
-  // scene,
-  // camera,
-  // selectedObjects);
-  // outlinePass.renderToSreen = true;
-  // outlinePass.selectedObjects = selectedObjects;
-  //
-  // composer.addPass(outlinePass);
-  //
-  // const params = {
-  //   edgeStrength: 2,
-  //   edgeGlow: 0,
-  //   edgeThickness: 9.0,
-  //   pulsePeriod: 0,
-  // };
-  // // Allows for black outline
-  // outlinePass.overlayMaterial.blending = THREE.SubtractiveBlending
-  // outlinePass.edgeStrength = params.edgeStrength;
-  // outlinePass.edgeGlow = params.edgeGlow;
-  // outlinePass.pulsePeriod = params.pulsePeriod;
-  // outlinePass.visibleEdgeColor.set(0xffffff);
-  // outlinePass.hiddenEdgeColor.set(0xffffff);
-
-  // const glitchPass = new GlitchPass();
-  // composer.addPass( glitchPass );
-  // const outlinePass = new OutlinePass();
-  // composer.addPass( outlinePass );
-
+  // composer.addPass( taaPass );
+  composer.addPass( pixelatedPass );
 
   // Bounding boxes;
   const cubeBBoxHelper = new THREE.Box3Helper( cubeBBox, 0x000000);
@@ -132,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
   window.cubeBBox = cubeBBox;
   // window.wallRBBox = wallRBBox;
   
-  tower.position.set(0, -1, 0);
-  updateTowerBBox();
+  // tower.position.set(0, -1, 0);
+  // updateTowerBBox();
 
   let nonPlayer = [wallLBBox, wallRBBox, floorBBox, ceilingBBox, towerBBox, threeX3_1BBox];
   let moveMode = true;
@@ -141,6 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('keydown', (event) => {
     if (event.key === 't') {
       moveMode = !moveMode;
+      console.log(moveMode);
     }
   });
   
