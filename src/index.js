@@ -145,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const black = new THREE.Color(0x000000);
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 't') {
+    if (event.key === 'q') {
       moveMode = !moveMode;
       stop();
     }
