@@ -62,11 +62,20 @@ document.addEventListener("DOMContentLoaded", () => {
   spotLight.target = cube;
   spotLight.position.set( 5, -3, -5) ;
   spotLight.angle = 0.15;
+  const spotLight2 = new THREE.SpotLight( 0x94e4ff )
+  spotLight2.target = finish;
+  spotLight2.position.set( 0, 10, 0);
+  spotLight2.angle = 0.03;
+  // spotLight2.castShadow = true;
   const pointLight = new THREE.PointLight(0xffffff, 1, 100);
   pointLight.position.set(5, 3, 5);
   const lightHelper = new THREE.PointLightHelper(pointLight);
   // scene.add(ambientLight);
+  const spotLight2Helper = new THREE.SpotLightHelper(spotLight2)
   scene.add(pointLight, lightHelper);
+  // scene.add(spotLight2);
+  // spotLight2Helper.update();
+  // scene.add(spotLight2Helper);
   // scene.add(spotLight);
   
 
@@ -172,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function animate() {
 		requestAnimationFrame( animate );
 
-		if (cube.position.z < 0) {
+		if (cube.position.z < 0 && camera.position.z < 0) {
 		  scene.add(spotLight);
 		} else {
 		  scene.remove(spotLight);
