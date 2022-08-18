@@ -197,9 +197,13 @@ document.addEventListener("DOMContentLoaded", () => {
           scene.remove(scene.children[0]); 
         }
         scene.add(floor);
+        scene.add(floorBBoxHelper);
         scene.add(ceiling);
+        scene.add(ceilingBBoxHelper);
         scene.add(wallLeft);
+        scene.add(wallLBBoxHelper);
         scene.add(wallRight);
+        scene.add(wallRBBoxHelper);
         scene.add(cube);
         scene.add(line);
         scene.add(ambientLight);

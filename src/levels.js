@@ -21,6 +21,7 @@ function level0(scene) {
   cube.position.set(...startPos);
   line.position.set(...startPos);
   
+  
   twoX3_1.position.set(-3, -9.5, 0.5);
   const twoX3_1BBoxHelper = new THREE.Box3Helper( twoX3_1BBox, 0x000000 );
   updateTwoX3_1BBox();

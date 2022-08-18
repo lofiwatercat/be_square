@@ -1,3 +1,113 @@
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:"";content:none}table{border-collapse:collapse;border-spacing:0}#dialogue{position:absolute;top:200px;text-align:center;margin-left:40%;margin-right:40%;z-index:100;display:block;color:#fff}#nav-links{position:absolute;margin-left:1%;top:1%}#nav-links img{width:5%}
+/*!*************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].use[1]!./node_modules/sass-loader/dist/cjs.js!./src/index.scss ***!
+  \*************************************************************************************************************************************/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
 
-/*# sourceMappingURL=main.css.map*/
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+#dialogue {
+  position: absolute;
+  top: 200px;
+  text-align: center;
+  margin-left: 40%;
+  margin-right: 40%;
+  z-index: 100;
+  display: block;
+  color: white;
+}
+
+#nav-links {
+  position: absolute;
+  margin-left: 1%;
+  top: 1%;
+}
+#nav-links img {
+  width: 5%;
+  background-color: white;
+  border-radius: 3px;
+  padding: 3px;
+}
+
+.info {
+  position: absolute;
+  margin-left: 0%;
+  margin-top: 5%;
+  background-color: whitesmoke;
+  padding-right: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 3px;
+}
+.info .dropdown-info {
+  border-style: solid;
+  border-width: 3px;
+  padding-top: 10px;
+  display: none;
+  width: 250%;
+  position: absolute;
+  background-color: whitesmoke;
+  padding: 5px;
+  padding-right: 50px;
+}
+.info .dropdown-info li {
+  width: 100%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.info:hover .dropdown-info {
+  display: block;
+  border-radius: 5px;
+}

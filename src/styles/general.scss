@@ -16,5 +16,47 @@
 
 	img {
 		width: 5%;
+		background-color: white;
+		border-radius: 3px;
+		padding: 3px;
+	}
+}
+
+.info {
+	position: absolute;
+	margin-left: 0%;
+	margin-top: 5%;
+	background-color: whitesmoke;
+	padding-right: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 3px;
+
+	.dropdown-info {
+		border-style: solid;
+		border-width: 3px;
+		padding-top: 10px;
+		display: none;
+		width: 250%;
+		position: absolute;
+		background-color: whitesmoke;
+		padding: 5px;
+		padding-right: 50px;
+
+		li {
+			width: 100%;
+			padding-top: 5px;
+			padding-bottom: 5px;
+		}
+		
+	}
+}
+
+.info:hover {
+	.dropdown-info {
+		display: block;
+		border-radius: 5px;
 	}
 }
