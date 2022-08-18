@@ -4,7 +4,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 // import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass.js';
 // import { FilmPass} from 'three/examples/jsm/postprocessing/FilmPass';
-// import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 // import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass';
 import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
 import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass';
@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   scene.background = new THREE.Color(0x7c8291);
 
   const renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement)
 
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   const controls = new OrbitControls(camera, renderer.domElement);
   
-  const ambientLight = new THREE.AmbientLight(0xffffff);
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
   const spotLight = new THREE.SpotLight( 0xffffff );
   spotLight.target = cube;
   spotLight.position.set( 5, -3, -5) ;
@@ -70,9 +71,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const pointLight = new THREE.PointLight(0xffffff, 1, 100);
   pointLight.position.set(5, 3, 5);
   const lightHelper = new THREE.PointLightHelper(pointLight);
-  // scene.add(ambientLight);
+  scene.add(ambientLight);
   const spotLight2Helper = new THREE.SpotLightHelper(spotLight2)
-  scene.add(pointLight, lightHelper);
+  scene.add(pointLight);
   // scene.add(spotLight2);
   // spotLight2Helper.update();
   // scene.add(spotLight2Helper);
@@ -89,13 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
   window.resolution = resolution
   const composer = new EffectComposer( renderer );
   const renderPass = new RenderPass( scene, camera );
-  // const taaPass = new TAARenderPass( scene, camera, black, 1)
-  // taaPass.sampleLevel = 1;
   const pixelatedPass =  new RenderPixelatedPass(
     resolution, 1, scene, camera
   );
   composer.addPass( renderPass );
-  // composer.addPass( taaPass );
   composer.addPass( pixelatedPass );
 
   // Bounding boxes;
@@ -165,9 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   
   const levels = [
+    LEVELS.level0,
     LEVELS.level1,
     LEVELS.level2,
     LEVELS.level3,
+    LEVELS.level4
   ]
 
 
@@ -176,7 +176,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Testing
   // levels[1](scene);
   // levels[2](scene);
-
+  // levels[3](scene);
+  // levels[4](scene);
   
   function animate() {
 		requestAnimationFrame( animate );
@@ -190,6 +191,19 @@ document.addEventListener("DOMContentLoaded", () => {
 		if (finished === true) {
 		  if (i + 1 < levels.length) {
 		    i++;
+		  } else {
+		    i = 0;
+		    while(scene.children.length > 0){ 
+          scene.remove(scene.children[0]); 
+        }
+        scene.add(floor);
+        scene.add(ceiling);
+        scene.add(wallLeft);
+        scene.add(wallRight);
+        scene.add(cube);
+        scene.add(line);
+        scene.add(ambientLight);
+        scene.add(pointLight);
 		  }
 		  levels[i](scene);
 		  moveMode = true;

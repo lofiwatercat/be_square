@@ -158,7 +158,7 @@ function moveCube(arr) {
       }
       // Jump if we are touching the ground
       if (keys[' '] && (el.containsPoint(interPoint2) && el.containsPoint(interPoint3))) {
-        velY = 0.57;
+        velY = 0.6;
         if (velX > 0) {
           rClock += 105;
         }
