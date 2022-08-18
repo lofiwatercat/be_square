@@ -58,11 +58,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const controls = new OrbitControls(camera, renderer.domElement);
   
   const ambientLight = new THREE.AmbientLight(0xffffff);
+  const spotLight = new THREE.SpotLight( 0xffffff );
+  spotLight.target = cube;
+  spotLight.position.set( 5, -3, -5) ;
+  spotLight.angle = 0.15;
   const pointLight = new THREE.PointLight(0xffffff, 1, 100);
   pointLight.position.set(5, 3, 5);
   const lightHelper = new THREE.PointLightHelper(pointLight);
   // scene.add(ambientLight);
   scene.add(pointLight, lightHelper);
+  // scene.add(spotLight);
+  
 
   // Postprocessing
   let resolution = {
@@ -112,6 +118,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.cube = cube;
   window.line = line;
   window.finishBBox = finishBBox;
+  window.camera = camera;
   // window.wallRight = wallRight;
   // window.a = new THREE.Vector3();
   // window.cubeBBoxHelper = cubeBBoxHelper;
@@ -160,9 +167,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Testing
   // levels[1](scene);
   // levels[2](scene);
+
   
   function animate() {
 		requestAnimationFrame( animate );
+
+		if (cube.position.z < 0) {
+		  scene.add(spotLight);
+		} else {
+		  scene.remove(spotLight);
+		}
 
 		if (finished === true) {
 		  if (i + 1 < levels.length) {

@@ -31,6 +31,7 @@ let grav = -0.03;
 let rClock = 0;
 let rCounterClock = 0;
 let friction = 0.9;
+let reverse = false;
 
 function stop() {
   velX = 0;
@@ -41,29 +42,34 @@ function stop() {
 function moveCube(arr) {
   finished = false;
   velY += grav;
-  
+
+  if (camera.position.z < 0) {
+    reverse = true;
+  } else {
+    reverse = false;
+  }
   if (keys['d']) {
     // cube.position.x += xDiff;
-    if (velX < xDiff) {
-      velX += 0.03;
+    if (!reverse) {
+      if (velX < xDiff) {
+        velX += 0.03;
+      }
+    } else {
+      if (velX > -xDiff) {
+        velX -= 0.03;
+      }
     }
   }
   if (keys['a']) {
     // cube.position.x -= xDiff;
-    if (velX > -xDiff) {
-      velX -= 0.03;
-    }
-  }
-  if (keys['w']) {
-    // cube.position.y += yDiff;
-    if (velY < yDiff) {
-      velY += 0.03;
-    }
-  }
-  if (keys['s']) {
-    // cube.position.y -= yDiff;
-    if (velY > -yDiff) {
-      velY -= 0.03;
+    if (!reverse) {
+      if (velX > -xDiff) {
+        velX -= 0.03;
+      }
+    } else {
+      if (velX < xDiff) {
+        velX += 0.03;
+      }
     }
   }
   if (keys['r']) {
@@ -217,16 +223,35 @@ function moveCubeAlt(arr) {
   finished = false;
   velY += grav;
   
+  if (camera.position.z < 0) {
+    reverse = true;
+  } else {
+    reverse = false;
+  }
+  
   if (keys['s']) {
     // cube.position.y += yDiff;
-    if (velZ < zDiff) {
-      velZ += 0.03;
+    if (!reverse) {
+      if (velZ < zDiff) {
+        velZ += 0.03;
+      }
+    } else {
+      if (velZ > -zDiff) {
+        velZ -= 0.03;
+      }
     }
   }
   if (keys['w']) {
     // cube.position.y -= yDiff;
-    if (velZ > -zDiff) {
-      velZ -= 0.03;
+    if (!reverse) {
+      console.log(reverse);
+      if (velZ > -zDiff) {
+        velZ -= 0.03;
+      }
+    } else {
+      if (velZ < zDiff) {
+        velZ += 0.03;
+      }
     }
   }
   
