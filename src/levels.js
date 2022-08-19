@@ -35,7 +35,7 @@ function level0(scene) {
 }
 
 function level1(scene) {
-  div.innerText = "Use 't' to change dimensions, w and s to move through it. 'r' to find your way back";
+  div.innerText = "Use 'q' or 't' to change dimensions, w and s to move through it. 'r' to find your way back";
   cube.position.set(...startPos);
   line.position.set(...startPos);
 
