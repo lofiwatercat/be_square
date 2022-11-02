@@ -137,7 +137,7 @@ function moveCube(arr) {
       if (cubeMin < elMax && cubeMax > elMax) {
         // If left (-x) side of the cube is touching
         arr[i] = -1;
-      } else if (cubeMin < elMin && cubeMax > elMax) {
+      } else if (cubeMin < elMin && cubeMax < elMax) {
         arr[i] = 1;
       }
     }
