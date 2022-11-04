@@ -9,6 +9,9 @@ const edges = new THREE.EdgesGeometry( geometry );
 const lineMaterial = new THREE.LineBasicMaterial( { color: 0x000000 } );
 const line = new THREE.LineSegments( edges, lineMaterial );
 
+const white = new THREE.Color(0xffffff);
+const black = new THREE.Color(0x000000);
+
 
 const keys = [];
 
@@ -89,7 +92,6 @@ function moveCube(arr) {
   if (keys['w']) {
     // cube.position.y -= yDiff;
     if (!reverse) {
-      console.log(reverse);
       if (velZ > -zDiff) {
         velZ -= 0.03;
       }
@@ -437,5 +439,18 @@ function updateCubeBBox() {
   cubeBBox.setFromObject(cube);
 }
 
+const noInput = () => {
+  cube.position.y += grav;
+}
 
-export { cube, line, keys, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt, finished, stop };
+const theMove = (arr) => {
+  if (keys['a'] || keys['d']) {
+    moveCube(arr)
+  } else if (keys['w'] || keys['s']) {
+    moveCubeAlt(arr)
+  } else {
+    noInput();
+  }
+}
+
+export { cube, line, keys, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt, finished, stop, theMove };

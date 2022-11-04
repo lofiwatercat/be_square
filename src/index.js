@@ -8,7 +8,7 @@ import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 // import { BloomPass } from 'three/examples/jsm/postprocessing/BloomPass';
 import { RenderPixelatedPass } from 'three/examples/jsm/postprocessing/RenderPixelatedPass';
 import { TAARenderPass } from 'three/examples/jsm/postprocessing/TAARenderPass';
-import { cube, line, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt, finished, stop } from './cube';
+import { cube, line, moveCube, cubeBBox, updateCubeBBox, moveCubeAlt, finished, stop, theMove } from './cube';
 import { wallRight, wallRBBox } from './wallRight';
 import { wallLeft, wallLBBox } from './wallLeft';
 import { floor, floorBBox } from './floor'
@@ -214,11 +214,15 @@ document.addEventListener("DOMContentLoaded", () => {
 		  swapColors();
 		}
 		
-    if (moveMode) {
+    /* if (moveMode) {
       moveCube(nonPlayer);
     } else {
       moveCubeAlt(nonPlayer);
-    }
+    } */
+
+    theMove(nonPlayer);
+
+
 
     finish.rotation.x += 0.03;
     finish.rotation.y += 0.03;
