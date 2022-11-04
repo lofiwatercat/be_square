@@ -44,71 +44,8 @@ function stop() {
   velZ = 0;
 }
 
-function moveCube(arr) {
-  finished = false;
-  velY += grav;
-
-  if (camera.position.z < 0) {
-    reverse = true;
-  } else {
-    reverse = false;
-  }
-  if (keys['d']) {
-    // cube.position.x += xDiff;
-    if (!reverse) {
-      if (velX < xDiff) {
-        velX += 0.03;
-      }
-    } else {
-      if (velX > -xDiff) {
-        velX -= 0.03;
-      }
-    }
-  }
-  if (keys['a']) {
-    // cube.position.x -= xDiff;
-    if (!reverse) {
-      if (velX > -xDiff) {
-        velX -= 0.03;
-      }
-    } else {
-      if (velX < xDiff) {
-        velX += 0.03;
-      }
-    }
-  }
-  if (keys['s']) {
-    // cube.position.y += yDiff;
-    if (!reverse) {
-      if (velZ < zDiff) {
-        velZ += 0.03;
-      }
-    } else {
-      if (velZ > -zDiff) {
-        velZ -= 0.03;
-      }
-    }
-  }
-  if (keys['w']) {
-    // cube.position.y -= yDiff;
-    if (!reverse) {
-      if (velZ > -zDiff) {
-        velZ -= 0.03;
-      }
-    } else {
-      if (velZ < zDiff) {
-        velZ += 0.03;
-      }
-    }
-  }
-  if (keys['r']) {
-    cube.position.set(-15, -3, 0);
-    line.position.set(-15, -3, 0);
-    velX = 0;
-    velY = 0;
-  }
-
-  // Collision detection
+function collisionDetectionXY(arr) {
+    // Collision detection
   const cubeWidth = cube.geometry.parameters['width'];
   const cubeHeight = cube.geometry.parameters['height'];
   // const dispMulti = 0.23;
@@ -211,6 +148,17 @@ function moveCube(arr) {
       }
     }
 
+    if (cube.position.z > 1) {
+      cube.position.z = 1;
+      velZ = 0;
+    }
+
+    if (cube.position.z < -1) {
+      cube.position.z = -1;
+      velZ = 0;
+    }
+
+
     if (rClock) {
       cube.rotation.z -= 0.03;
       line.rotation.z -= 0.03;
@@ -230,6 +178,74 @@ function moveCube(arr) {
 
   })
 
+}
+
+function moveCube(arr) {
+  finished = false;
+  velY += grav;
+
+  if (camera.position.z < 0) {
+    reverse = true;
+  } else {
+    reverse = false;
+  }
+  if (keys['d']) {
+    // cube.position.x += xDiff;
+    if (!reverse) {
+      if (velX < xDiff) {
+        velX += 0.03;
+      }
+    } else {
+      if (velX > -xDiff) {
+        velX -= 0.03;
+      }
+    }
+  }
+  if (keys['a']) {
+    // cube.position.x -= xDiff;
+    if (!reverse) {
+      if (velX > -xDiff) {
+        velX -= 0.03;
+      }
+    } else {
+      if (velX < xDiff) {
+        velX += 0.03;
+      }
+    }
+  }
+  if (keys['s']) {
+    // cube.position.y += yDiff;
+    if (!reverse) {
+      if (velZ < zDiff) {
+        velZ += 0.03;
+      }
+    } else {
+      if (velZ > -zDiff) {
+        velZ -= 0.03;
+      }
+    }
+  }
+  if (keys['w']) {
+    // cube.position.y -= yDiff;
+    if (!reverse) {
+      if (velZ > -zDiff) {
+        velZ -= 0.03;
+      }
+    } else {
+      if (velZ < zDiff) {
+        velZ += 0.03;
+      }
+    }
+  }
+  if (keys['r']) {
+    cube.position.set(-15, -3, 0);
+    line.position.set(-15, -3, 0);
+    velX = 0;
+    velY = 0;
+  }
+
+  collisionDetectionXY(arr);
+
   if (Math.abs(velY) < 0.03) {
     velY = 0;
   }
@@ -248,6 +264,7 @@ function moveCube(arr) {
   cube.position.z += velZ;
   line.position.x = cube.position.x;
   line.position.y = cube.position.y;
+  line.position.z = cube.position.z;
   updateCubeBBox();
 }
 
@@ -276,7 +293,6 @@ function moveCubeAlt(arr) {
   if (keys['w']) {
     // cube.position.y -= yDiff;
     if (!reverse) {
-      console.log(reverse);
       if (velZ > -zDiff) {
         velZ -= 0.03;
       }
@@ -424,10 +440,13 @@ function moveCubeAlt(arr) {
 
   velZ *= friction;
   velY *= friction;
+  velX *= friction;
+  cube.position.x += velX;
   cube.position.z += velZ;
   cube.position.y += velY;
   line.position.z = cube.position.z;
   line.position.y = cube.position.y;
+  line.position.x = cube.position.x;
   updateCubeBBox();
 }
 
@@ -439,8 +458,32 @@ function updateCubeBBox() {
   cubeBBox.setFromObject(cube);
 }
 
-const noInput = () => {
-  cube.position.y += grav;
+const noInput = (arr) => {
+  velY += grav;
+  collisionDetectionXY(arr);
+  if (Math.abs(velY) < 0.03) {
+    velY = 0;
+  }
+  if (Math.abs(velX) < 0.03) {
+    velX = 0;
+  }
+  if (Math.abs(velZ) < 0.03) {
+    velZ = 0;
+  }
+
+  velX *= friction;
+  velY *= friction;
+  velZ *= friction;
+  cube.position.x += velX;
+  cube.position.y += velY;
+  cube.position.z += velZ;
+
+  line.position.x = cube.position.x;
+  line.position.z = cube.position.z;
+  line.position.y = cube.position.y;
+
+
+  updateCubeBBox();
 }
 
 const theMove = (arr) => {
@@ -449,7 +492,7 @@ const theMove = (arr) => {
   } else if (keys['w'] || keys['s']) {
     moveCubeAlt(arr)
   } else {
-    noInput();
+    noInput(arr);
   }
 }
 
