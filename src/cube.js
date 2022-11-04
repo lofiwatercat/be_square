@@ -488,8 +488,14 @@ const noInput = (arr) => {
 
 const theMove = (arr) => {
   if (keys['a'] || keys['d']) {
+    finished = false;
+    /* cube.material.color = white;
+    line.material.color = black; */
     moveCube(arr)
   } else if (keys['w'] || keys['s']) {
+    finished = false;
+    /* cube.material.color = black;
+    line.material.color = white; */
     moveCubeAlt(arr)
   } else {
     noInput(arr);
