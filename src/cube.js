@@ -32,6 +32,8 @@ let rClock = 0;
 let rCounterClock = 0;
 let friction = 0.9;
 let reverse = false;
+let zDiff = 0.13;
+let velZ = 0;
 
 function stop() {
   velX = 0;
@@ -69,6 +71,31 @@ function moveCube(arr) {
     } else {
       if (velX < xDiff) {
         velX += 0.03;
+      }
+    }
+  }
+  if (keys['s']) {
+    // cube.position.y += yDiff;
+    if (!reverse) {
+      if (velZ < zDiff) {
+        velZ += 0.03;
+      }
+    } else {
+      if (velZ > -zDiff) {
+        velZ -= 0.03;
+      }
+    }
+  }
+  if (keys['w']) {
+    // cube.position.y -= yDiff;
+    if (!reverse) {
+      console.log(reverse);
+      if (velZ > -zDiff) {
+        velZ -= 0.03;
+      }
+    } else {
+      if (velZ < zDiff) {
+        velZ += 0.03;
       }
     }
   }
@@ -207,18 +234,21 @@ function moveCube(arr) {
   if (Math.abs(velX) < 0.03) {
     velX = 0;
   }
+  if (Math.abs(velZ) < 0.03) {
+    velZ = 0;
+  }
   velX *= friction;
   velY *= friction;
+  velZ *= friction;
   
   cube.position.x += velX;
   cube.position.y += velY;
+  cube.position.z += velZ;
   line.position.x = cube.position.x;
   line.position.y = cube.position.y;
   updateCubeBBox();
 }
 
-let zDiff = 0.3;
-let velZ = 0;
 function moveCubeAlt(arr) {
   finished = false;
   velY += grav;
