@@ -6,9 +6,15 @@ abilities to help you to the end.
 
 Play here at [https://lofiwatercat.github.io/be_square/](https://lofiwatercat.github.io/be_square/)
 
-This is you:
+## This is you
 
 ![](https://github.com/loFiWaterCat/be_square/blob/main/src/images/cube.png)
+
+## And this is what you want.
+
+![](https://github.com/loFiWaterCat/be_square/blob/main/src/images/goal.png)
+
+Good luck, and have fun!
 
 ## Technologies and APIs
 This project uses the following technologies:
