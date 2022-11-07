@@ -498,6 +498,7 @@ const theMove = (arr) => {
     line.material.color = white; */
     moveCubeAlt(arr)
   } else {
+    finished = false;
     noInput(arr);
   }
 }

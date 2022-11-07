@@ -1,12 +1,19 @@
 #dialogue {
 	position: absolute;
+  text-align: center;
 	top: 200px;
-	text-align: center;
-	margin-left: 40%;
-	margin-right: 40%;
 	z-index: 100;
+  margin-left: 30%;
+  padding-top: 10px;
+  padding-bottom: 10px;
 	display:block;
 	color: white;
+  font-size: 30px;
+  width: 40%;
+  background-color: black;
+  border-radius: 5px;
+  background-color: #8f77a6;
+  border: 2px solid black;
 }
 
 #nav-links {
@@ -24,7 +31,8 @@
 
 .info {
 	position: absolute;
-	margin-left: 0%;
+	margin-left: 5px;
+  padding: 5px;
 	margin-top: 5%;
 	background-color: whitesmoke;
 	padding-right: 5px;
@@ -33,6 +41,7 @@
 	border-radius: 5px;
 	border-style: solid;
 	border-width: 3px;
+  font-size: 20px;
 
 	.dropdown-info {
 		border-style: solid;
@@ -56,7 +65,68 @@
 
 .info:hover {
 	.dropdown-info {
+    margin-top: 5px;
 		display: block;
 		border-radius: 5px;
 	}
+}
+
+.fade-in {
+  animation: fadeIn ease 1s;
+  -webkit-animation: fadeIn ease 1s;
+  -moz-animation: fadeIn ease 1s;
+  -o-animation: fadeIn ease 1s;
+  -ms-animation: fadeIn ease 1s;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+.popup {
+  position: absolute;
+  background-color: white;
+  height: 60%;
+  width: 60%;
 }

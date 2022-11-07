@@ -14,6 +14,33 @@ import { blk6, blk6BBox, updateBlk6BBox } from './blocks';
 
 let div = document.createElement("div");
 div.setAttribute('id', 'dialogue');
+
+function fade(element) {
+    var op = 1;  // initial opacity
+    var timer = setInterval(function () {
+        if (op <= 0.1){
+            clearInterval(timer);
+            element.style.display = 'none';
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op -= op * 0.1;
+    }, 90);
+}
+
+function unfade(element) {
+    var op = 0.1;  // initial opacity
+    element.style.display = 'block';
+    var timer = setInterval(function () {
+        if (op >= 1){
+            clearInterval(timer);
+        }
+        element.style.opacity = op;
+        element.style.filter = 'alpha(opacity=' + op * 100 + ")";
+        op += op * 0.1;
+    }, 10);
+}
+
 let startPos = [-15, -3, 0];
 
 function level0(scene) {
@@ -35,7 +62,7 @@ function level0(scene) {
 }
 
 function level1(scene) {
-  div.innerText = "Use 'q' or 't' to change dimensions, w and s to move through it. 'r' to find your way back";
+  div.innerText = "w and s will let you move forwards and back"
   cube.position.set(...startPos);
   line.position.set(...startPos);
 
@@ -58,7 +85,7 @@ function level1(scene) {
 }
 
 function level2(scene) {
-  div.innerText = "Drag the mouse to move the camera"
+  div.innerText = "Drag the mouse to move the camera, see the path clearly"
   let startPos = [-15, -3, 0];
   cube.position.set(...startPos);
   line.position.set(...startPos);
