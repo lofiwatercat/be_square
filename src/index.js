@@ -41,6 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
     camera.updateProjectionMatrix();
   })
 
+  let popup = document.getElementById("popup")
+
+  popup.addEventListener('click', hide)
+
+  function hide() {
+    popup.style.display = "none"
+  }
+
+
   // Objects
   tower.position.set(0, -5, 0);
   threeX3_1.position.set(4, -3.5, -1);
